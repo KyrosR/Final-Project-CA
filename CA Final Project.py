@@ -11,6 +11,7 @@
 #7 Nu print het programma de nextgenerations cells, miss later veranderen in return voor het visuele aspect.
 #8 Miss eerst checken welke boundary dan welke rule en dan de nieuwe generatie bepalen, miss onodig veel checks
 # nu met if elif.
+#9 Vraag over Dirichlet of beide zijden 1 of 0 zijn of dat het per zijde kan verschillen.
 #8 Als je online bent dan kan je appen als je iets niet snapt ofz of wat anders ofz idk. groeten Ruben.
 class OnedimCA:
     def __init__(self, start_pattern, apply_rule, layers_amount, boundary_con):
@@ -91,7 +92,7 @@ class OnedimCA:
         else:
             return "0"
 
-    #creërt nieuwe generatie cellen
+    #creërt nieuwe generatie cellen op basis periodieke boundaries
     def newgeneration_periodic(self):
         new_cells = []
         #voegt iedere nieuwe cell op basis van een rule toe aan de lijst van nieuwe cellen
@@ -161,6 +162,53 @@ class OnedimCA:
             delimiter = ' '
             cells_configuration = delimiter.join(new_cells)
             print(cells_configuration) #return
+
+    #creërt nieuwe generatie cellen met Neumann boundaries
+    def newgeneration_Neumann(self):
+        #Zelfde idee als bij Dirichletm maar nu heeft de linker/rechter buurman van de eerste/laatste cel
+        # de zelfde staat als de eerste/laatse cel
+        new_cells = []
+        if self.apply_rule == 30:
+            first_cel = self.cells[0] + self.cells[0] + self.cells[1]
+            new_cells.extend(self.rule_30(first_cel))
+            for i in range(1, self.cell_amount-1):
+                new_cell = self.cells[i-1] + self.cells[i] + self.cells[i+1]
+                new_cells.extend(self.rule_30(new_cell))
+            last_cel = self.cells[self.cell_amount-1] + self.cells[-1] + self.cells[-1]
+            new_cells.extend(self.rule_30(last_cel))
+
+            self.cells = new_cells
+            delimiter = ' '
+            cells_configuration = delimiter.join(new_cells)
+            print(cells_configuration) #return
+
+        elif self.apply_rule == 110:
+            first_cel = self.cel[0] + self.cells[0] + self.cells[1]
+            new_cells.extend(self.rule_110(first_cel))
+            for i in range(1, self.cell_amount-1):
+                new_cell = self.cells[i-1] + self.cells[i] + self.cells[i+1]
+                new_cells.extend(self.rule_110(new_cell))
+            last_cel = self.cells[self.cell_amount-1] + self.cells[-1] + self.cells[-1]
+            new_cells.extend(self.rule_110(last_cel))
+
+            self.cells = new_cells
+            delimiter = ' '
+            cells_configuration = delimiter.join(new_cells)
+            print(cells_configuration) #return
+
+        elif self.apply_rule == 184:
+            first_cel = self.cells[0] + self.cells[0] + self.cells[1]
+            new_cells.extend(self.rule_184(first_cel))
+            for i in range(1, self.cell_amount-1):
+                new_cell = self.cells[i-1] + self.cells[i] + self.cells[i+1]
+                new_cells.extend(self.rule_184(new_cell))
+            last_cel = self.cells[self.cell_amount-1] + self.cells[-1] + self.cells[-1]
+            new_cells.extend(self.rule_184(last_cel))
+
+            self.cells = new_cells
+            delimiter = ' '
+            cells_configuration = delimiter.join(new_cells)
+            print(cells_configuration) #return
     
     #Zorgt ervoor dat de nieuwe generatie x aantal keer geprint wordt en bepaalt met welke boundaries.
     def layers(self):
@@ -174,9 +222,12 @@ class OnedimCA:
             condition = int(input("Kies tussen 0 of 1. ")) #1 or 0
             for i in range(1, self.layers_amount+1):
                 self.newgeneration_Dirichlet(condition)
+        elif self.boundary_con == "Neumann":
+            for i in range(1, self.layers_amount+1):
+                self.newgeneration_Neumann()
 
 
-p = OnedimCA("000010000", 30, 1, "Dirichlet")
+p = OnedimCA("000010000", 30, 1, "Neumann")
 p.layers()
 
     
