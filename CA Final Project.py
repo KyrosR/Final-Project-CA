@@ -6,12 +6,14 @@
 # dat die aangeroepen wordt ipv Regel_30.
 #3 Als je online bent dan kan je appen als je iets niet snapt ofz of wat anders ofz. gr Ruben.
 class OnedimCA:
-    def __init__(self, cell_amount, start_pattern, apply_rule, layers_amount):
-        self.cell_amount = cell_amount
+    def __init__(self, start_pattern, apply_rule, layers_amount, boundary_con):
+        
         self.start_patern = start_pattern
         self.apply_rule = apply_rule
         self.layers_amount = layers_amount
         self.cells = list(self.start_patern)
+        self.cell_amount = len(self.cells)
+        self.boundary_con = boundary_con
     #willen we dit de cellprinter maken?
     def cells_print(self):
         return self.cells
