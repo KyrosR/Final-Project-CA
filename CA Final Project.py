@@ -1,5 +1,10 @@
 #Cellular Automata
 #Class for 1 dim CA
+#Opmerkingen:
+#1. Ik denk dat we cell_amount niet echt nodig hebben, is namelijk de lengte van self.cells.
+#2. Regel_30 werkt, ik ga nu verder met Regel_110. Daarbij moet ik alleen ff kijken hoe ik zorg,
+# dat die aangeroepen wordt ipv Regel_30.
+#3 Als je online bent dan kan je appen als je iets niet snapt ofz of wat anders ofz. gr Ruben.
 class OnedimCA:
     def __init__(self, cell_amount, start_pattern, apply_rule, layers_amount):
         self.cell_amount = cell_amount
