@@ -36,8 +36,46 @@ class OnedimCA:
             return "0"
 
 
+    # de nieuwe cell op basis van rule_110
+    def rule_110(self, new_cell):
+        if new_cell == "111":
+            return "0"
+        elif new_cell == "110":
+            return "1"
+        elif new_cell == "101":
+            return "1"
+        elif new_cell == "100":
+            return "0"
+        elif new_cell == "011":
+            return "1"
+        elif new_cell == "010":
+            return "1"
+        elif new_cell == "001":
+            return "1"
+        else:
+            return "0"
+
+
+    def rule_184(self, new_cell):
+        if new_cell == "111":
+            return "1"
+        elif new_cell == "110":
+            return "0"
+        elif new_cell == "101":
+            return "1"
+        elif new_cell == "100":
+            return "1"
+        elif new_cell == "011":
+            return "1"
+        elif new_cell == "010":
+            return "0"
+        elif new_cell == "001":
+            return "0"
+        else:
+            return "0"
+
     #creërt nieuwe generatie cellen
-    def newgeneration(self):
+    def newgeneration_periodic(self):
         new_cells = []
         #voegt iedere nieuwe cell op basis van rule_30 toe aan de lijst van nieuwe cellen
         for i in range(1, self.cell_amount+1):
@@ -52,15 +90,64 @@ class OnedimCA:
         delimiter = ' '
         cells_configuration = delimiter.join(new_cells)
         print(cells_configuration) #return
+
+    #creërt nieuwe generatie cellen met Dirichlet boundaries gekozen door user,(1 of 0)
+    def newgeneration_Dirichlet(self, condition):
+        new_cells = []
+        if self.apply_rule == 30:
+            first_cel = str(condition) + self.cells[0] + self.cells[1]
+            new_cells.extend(self.rule_30(first_cel))
+            for i in range(1, self.cell_amount-1):
+                new_cell = self.cells[i-1] + self.cells[i] + self.cells[i+1]
+                new_cells.extend(self.rule_30(new_cell))
+            last_cel = self.cells[self.cell_amount-1] + self.cells[-1] + str(condition)
+            new_cells.extend(self.rule_30(last_cel))
+
+            self.cells = new_cells
+            delimiter = ' '
+            cells_configuration = delimiter.join(new_cells)
+            print(cells_configuration) #return
+
+        elif self.apply_rule == 110:
+            first_cel = str(condition) + self.cells[0] + self.cells[1]
+            new_cells.extend(self.rule_110(first_cel))
+            for i in range(1, self.cell_amount-1):
+                new_cell = self.cells[i-1] + self.cells[i] + self.cells[i+1]
+                new_cells.extend(self.rule_110(new_cell))
+            last_cel = self.cells[self.cell_amount-1] + self.cells[-1] + str(condition)
+            new_cells.extend(self.rule_110(last_cel))
+
+            self.cells = new_cells
+            delimiter = ' '
+            cells_configuration = delimiter.join(new_cells)
+            print(cells_configuration) #return
+
+        elif self.apply_rule == 184:
+            first_cel = str(condition) + self.cells[0] + self.cells[1]
+            new_cells.extend(self.rule_184(first_cel))
+            for i in range(1, self.cell_amount-1):
+                new_cell = self.cells[i-1] + self.cells[i] + self.cells[i+1]
+                new_cells.extend(self.rule_184(new_cell))
+            last_cel = self.cells[self.cell_amount-1] + self.cells[-1] + str(condition)
+            new_cells.extend(self.rule_184(last_cel))
+
+            self.cells = new_cells
+            delimiter = ' '
+            cells_configuration = delimiter.join(new_cells)
+            print(cells_configuration) #return
     
     #Zorgt ervoor dat de nieuwe generatie x aantal keer geprint wordt.
     def layers(self):
-        # Alleen startpatter is niet in de goede print form, aan elkaar ipv een spatie er tussen.
+        # Alleen startpattern is niet in de goede print form, aan elkaar ipv een spatie er tussen.
         # kunnen we later doen, moet een ez fix zijn.
         print(self.start_patern)
-        for i in range(1, self.layers_amount+1):
-            self.newgeneration()
-
+        if self.boundary_con == "periodic":
+            for i in range(1, self.layers_amount+1):
+                self.newgeneration_periodic()
+        elif self.boundary_con == "Dirichlet":
+            condition = int(input()) #1 or 0
+            for i in range(1, self.layers_amount+1):
+                self.newgeneration_Dirichlet(condition)
 
 
 p = OnedimCA(9, "000010000", 30, 4)
