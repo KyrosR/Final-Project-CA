@@ -11,7 +11,7 @@ class OnedimCA:
     def cells(self):
         self.cells = list(self.start_patern)
 
-
+    # Ben er mee bezig, gr Ruben.
     def rule_30(self):
         print("moet nog")
 
