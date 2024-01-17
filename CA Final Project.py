@@ -3,7 +3,7 @@
 #Opmerkingen:
 #1.Ik heb cell_amount wegelaten als argument van innit, cell_amount is namelijk de lengte van self.cells.
 #2. Regel_30,110,184 werkt, het argument apply_rule moet je de waarde van de rule aan meegeven.
-# ook werken de boundaries periodic en Dirichlet, deze namen moet je meegeven aan boundary_con.
+# ook werken de boundaries periodic, Dirichlet en Neumann deze namen moet je meegeven aan boundary_con.
 #4 Idk wat we met cells_print moeten, omdat het al eigl verwerkt zit in layers().
 #5 Miss is het een goed idee om de rules(30 enz) in een aparte file te zetten, miss ook de verschillende
 #boundaries in een andere file.
@@ -212,9 +212,10 @@ class OnedimCA:
     
     #Zorgt ervoor dat de nieuwe generatie x aantal keer geprint wordt en bepaalt met welke boundaries.
     def layers(self):
-        # Alleen startpattern is niet in de goede print form, aan elkaar ipv een spatie er tussen.
-        # kunnen we later doen, moet een ez fix zijn.
-        print(self.start_patern)
+        # Start patroon in juiste print wijze zetten
+        delimiter = ' '
+        first_layer = delimiter.join(self.cells)
+        print(first_layer)
         if self.boundary_con == "periodic":
             for i in range(1, self.layers_amount+1):
                 self.newgeneration_periodic()
