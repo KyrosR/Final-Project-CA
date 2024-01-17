@@ -147,12 +147,12 @@ class OnedimCA:
             for i in range(1, self.layers_amount+1):
                 self.newgeneration_periodic()
         elif self.boundary_con == "Dirichlet":
-            condition = int(input()) #1 or 0
+            condition = int(input("Kies tussen 0 of 1. ")) #1 or 0
             for i in range(1, self.layers_amount+1):
                 self.newgeneration_Dirichlet(condition)
 
 
-p = OnedimCA(9, "000010000", 30, 4)
+p = OnedimCA("000010000", 30, 1, "Dirichlet")
 p.layers()
 
     
