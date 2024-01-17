@@ -6,17 +6,62 @@ class OnedimCA:
         self.start_patern = start_pattern
         self.apply_rule = apply_rule
         self.layers_amount = layers_amount
-        self.cells = []
-
-    def cells(self):
         self.cells = list(self.start_patern)
+    #willen we dit de cellprinter maken?
+    def cells_print(self):
+        return self.cells
 
-    # Ben er mee bezig, gr Ruben.
-    def rule_30(self):
-        print("moet nog")
+    # de nieuwe cell op basis van rule_30
+    def rule_30(self, new_cell):
+        if new_cell == "111":
+            return "0"
+        elif new_cell == "110":
+            return "0"
+        elif new_cell == "101":
+            return "0"
+        elif new_cell == "100":
+            return "1"
+        elif new_cell == "011":
+            return "1"
+        elif new_cell == "010":
+            return "1"
+        elif new_cell == "001":
+            return "1"
+        else:
+            return "0"
 
+
+    #creërt nieuwe generatie cellen
     def newgeneration(self):
-        print("moet nog")
+        new_cells = []
+        #voegt iedere nieuwe cell op basis van rule_30 toe aan de lijst van nieuwe cellen
+        for i in range(1, self.cell_amount+1):
+            new_cell = self.cells[i-2] + self.cells[i-1] + self.cells[i%self.cell_amount]
+            new_cells.extend(self.rule_30(new_cell))
+
+        #zorgt er voor dat de nieuwe cellen op de juiste manier geprint worden, kunnen we later
+        # nog aanpassen naar return als dat nodig is.
+        # Ook wordt self.cells geasigned aan de niewe cellen zodat die daarna de goede nieuwe
+        # generatie kan bepalen.
+        self.cells = new_cells
+        delimiter = ' '
+        cells_configuration = delimiter.join(new_cells)
+        print(cells_configuration) #return
+    
+    #Zorgt ervoor dat de nieuwe generatie x aantal keer geprint wordt.
+    def layers(self):
+        # Alleen startpatter is niet in de goede print form, aan elkaar ipv een spatie er tussen.
+        # kunnen we later doen, moet een ez fix zijn.
+        print(self.start_patern)
+        for i in range(1, self.layers_amount+1):
+            self.newgeneration()
+
+
+
+p = OnedimCA(9, "000010000", 30, 4)
+p.layers()
+
+    
 
         
 
