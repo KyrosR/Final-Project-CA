@@ -236,7 +236,7 @@ class OnedimCA:
                 self.newgeneration_Neumann()
 
 
-p = OnedimCA("000010000", 30, 1, "Neumann")
+p = OnedimCA("000010000", 30, 20, "Neumann")
 p.layers()
 
     
