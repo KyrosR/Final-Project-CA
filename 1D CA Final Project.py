@@ -35,8 +35,7 @@ class OnedimCA(CA):
         super().__init__(start_pattern, apply_rule, layers_amount, boundary_con)
 
 
-    # Willen we dit de cellprinter maken?
-    # Heeft niet echt een doel nu, aangezien het al in layer() verwerkt zit.
+    # Van rule naar bin nummer
     def rule_to_bin(self):
         binary = bin(self.apply_rule)[2:].zfill(8)
         binary_list = list(binary)
@@ -108,9 +107,9 @@ class OnedimCA(CA):
         new_cells.extend(self.rule(first_cell, self.rule_to_bin()))
         for i in range(1, self.cell_amount-1):
             new_cell = self.cells[i-1] + self.cells[i] + self.cells[i+1]
-            new_cells.extend(self.rule(new_cell, self.rule_to_bin))
+            new_cells.extend(self.rule(new_cell, self.rule_to_bin()))
         last_cell = self.cells[self.cell_amount-1] + self.cells[-1] + self.cells[-1]
-        new_cells.extend(self.rule(last_cell, self.rule_to_bin))
+        new_cells.extend(self.rule(last_cell, self.rule_to_bin()))
 
         self.cells = new_cells
         delimiter = ' '
@@ -124,20 +123,23 @@ class OnedimCA(CA):
         # Start patroon in juiste print wijze zetten
         delimiter = ' '
         first_layer = delimiter.join(self.cells)
-        print(first_layer)
+        
         if self.boundary_con == "periodic":
+            print(first_layer)
             for i in range(1, self.layers_amount+1):
                 self.newgeneration_periodic()
         elif self.boundary_con == "Dirichlet":
             condition = int(input("Kies tussen 0 of 1. ")) #1 or 0
+            print(first_layer)
             for i in range(1, self.layers_amount+1):
                 self.newgeneration_Dirichlet(condition)
         elif self.boundary_con == "Neumann":
+            print(first_layer)
             for i in range(1, self.layers_amount+1):
                 self.newgeneration_Neumann()
 
 
-p = OnedimCA("000010000", 90, 20, "periodic")
+p = OnedimCA("000010000", 30, 20, "Neumann")
 p.layers()
 
     
