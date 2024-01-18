@@ -97,23 +97,31 @@ class OnedimCA:
         new_cells = []
         #voegt iedere nieuwe cell op basis van een rule toe aan de lijst van nieuwe cellen
         # Miss doen zoals bij Dirichlet want nu checkt die vgm wel heel vaak welke rule die moet toepassen
-        for i in range(1, self.cell_amount+1):
-            new_cell = self.cells[i-2] + self.cells[i-1] + self.cells[i%self.cell_amount]
-            if self.apply_rule == 30:
+        if self.apply_rule == 30:
+            for i in range(1, self.cell_amount+1):
+                new_cell = self.cells[i-2] + self.cells[i-1] + self.cells[i%self.cell_amount]
                 new_cells.extend(self.rule_30(new_cell))
-            elif self.apply_rule == 110:
+            self.cells = new_cells
+            delimiter = ' '
+            cells_configuration = delimiter.join(new_cells)
+            print(cells_configuration) #return
+        elif self.apply_rule == 110:
+            for i in range(1, self.cell_amount+1):
+                new_cell = self.cells[i-2] + self.cells[i-1] + self.cells[i%self.cell_amount]
                 new_cells.extend(self.rule_110(new_cell))
-            elif self.apply_rule == 184:
+            self.cells = new_cells
+            delimiter = ' '
+            cells_configuration = delimiter.join(new_cells)
+            print(cells_configuration) #return
+        elif self.apply_rule == 184:
+            for i in range(1, self.cell_amount+1):
+                new_cell = self.cells[i-2] + self.cells[i-1] + self.cells[i%self.cell_amount]
                 new_cells.extend(self.rule_184(new_cell))
-
-        #zorgt er voor dat de nieuwe cellen op de juiste manier geprint worden, kunnen we later
-        # nog aanpassen naar return als dat nodig is.
-        # Ook wordt self.cells geasigned aan de niewe cellen zodat die daarna de goede nieuwe
-        # generatie kan bepalen.
-        self.cells = new_cells
-        delimiter = ' '
-        cells_configuration = delimiter.join(new_cells)
-        print(cells_configuration) #return
+            self.cells = new_cells
+            delimiter = ' '
+            cells_configuration = delimiter.join(new_cells)
+            print(cells_configuration) #return
+        
 
     #creërt nieuwe generatie cellen met Dirichlet boundaries gekozen door user,(1 of 0)
     def newgeneration_Dirichlet(self, condition):
@@ -122,13 +130,13 @@ class OnedimCA:
         # Eerst de nieuwe eerste cel bepalen en dan als laatst de laatste cel, komt door boundary
         # de linker/rechter buurman van de eerste/laatse cel is of wel 1 of 0
         if self.apply_rule == 30:
-            first_cel = str(condition) + self.cells[0] + self.cells[1]
-            new_cells.extend(self.rule_30(first_cel))
+            first_cell = str(condition) + self.cells[0] + self.cells[1]
+            new_cells.extend(self.rule_30(first_cell))
             for i in range(1, self.cell_amount-1):
                 new_cell = self.cells[i-1] + self.cells[i] + self.cells[i+1]
                 new_cells.extend(self.rule_30(new_cell))
-            last_cel = self.cells[self.cell_amount-1] + self.cells[-1] + str(condition)
-            new_cells.extend(self.rule_30(last_cel))
+            last_cell = self.cells[self.cell_amount-1] + self.cells[-1] + str(condition)
+            new_cells.extend(self.rule_30(last_cell))
 
             self.cells = new_cells
             delimiter = ' '
@@ -136,13 +144,13 @@ class OnedimCA:
             print(cells_configuration) #return
 
         elif self.apply_rule == 110:
-            first_cel = str(condition) + self.cells[0] + self.cells[1]
-            new_cells.extend(self.rule_110(first_cel))
+            first_cell = str(condition) + self.cells[0] + self.cells[1]
+            new_cells.extend(self.rule_110(first_cell))
             for i in range(1, self.cell_amount-1):
                 new_cell = self.cells[i-1] + self.cells[i] + self.cells[i+1]
                 new_cells.extend(self.rule_110(new_cell))
-            last_cel = self.cells[self.cell_amount-1] + self.cells[-1] + str(condition)
-            new_cells.extend(self.rule_110(last_cel))
+            last_cell = self.cells[self.cell_amount-1] + self.cells[-1] + str(condition)
+            new_cells.extend(self.rule_110(last_cell))
 
             self.cells = new_cells
             delimiter = ' '
@@ -150,13 +158,13 @@ class OnedimCA:
             print(cells_configuration) #return
 
         elif self.apply_rule == 184:
-            first_cel = str(condition) + self.cells[0] + self.cells[1]
-            new_cells.extend(self.rule_184(first_cel))
+            first_cell = str(condition) + self.cells[0] + self.cells[1]
+            new_cells.extend(self.rule_184(first_cell))
             for i in range(1, self.cell_amount-1):
                 new_cell = self.cells[i-1] + self.cells[i] + self.cells[i+1]
                 new_cells.extend(self.rule_184(new_cell))
-            last_cel = self.cells[self.cell_amount-1] + self.cells[-1] + str(condition)
-            new_cells.extend(self.rule_184(last_cel))
+            last_cell = self.cells[self.cell_amount-1] + self.cells[-1] + str(condition)
+            new_cells.extend(self.rule_184(last_cell))
 
             self.cells = new_cells
             delimiter = ' '
@@ -169,13 +177,13 @@ class OnedimCA:
         # de zelfde staat als de eerste/laatse cel
         new_cells = []
         if self.apply_rule == 30:
-            first_cel = self.cells[0] + self.cells[0] + self.cells[1]
-            new_cells.extend(self.rule_30(first_cel))
+            first_cell = self.cells[0] + self.cells[0] + self.cells[1]
+            new_cells.extend(self.rule_30(first_cell))
             for i in range(1, self.cell_amount-1):
                 new_cell = self.cells[i-1] + self.cells[i] + self.cells[i+1]
                 new_cells.extend(self.rule_30(new_cell))
-            last_cel = self.cells[self.cell_amount-1] + self.cells[-1] + self.cells[-1]
-            new_cells.extend(self.rule_30(last_cel))
+            last_cell = self.cells[self.cell_amount-1] + self.cells[-1] + self.cells[-1]
+            new_cells.extend(self.rule_30(last_cell))
 
             self.cells = new_cells
             delimiter = ' '
@@ -183,13 +191,13 @@ class OnedimCA:
             print(cells_configuration) #return
 
         elif self.apply_rule == 110:
-            first_cel = self.cel[0] + self.cells[0] + self.cells[1]
-            new_cells.extend(self.rule_110(first_cel))
+            first_cell = self.cel[0] + self.cells[0] + self.cells[1]
+            new_cells.extend(self.rule_110(first_cell))
             for i in range(1, self.cell_amount-1):
                 new_cell = self.cells[i-1] + self.cells[i] + self.cells[i+1]
                 new_cells.extend(self.rule_110(new_cell))
-            last_cel = self.cells[self.cell_amount-1] + self.cells[-1] + self.cells[-1]
-            new_cells.extend(self.rule_110(last_cel))
+            last_cell = self.cells[self.cell_amount-1] + self.cells[-1] + self.cells[-1]
+            new_cells.extend(self.rule_110(last_cell))
 
             self.cells = new_cells
             delimiter = ' '
@@ -197,13 +205,13 @@ class OnedimCA:
             print(cells_configuration) #return
 
         elif self.apply_rule == 184:
-            first_cel = self.cells[0] + self.cells[0] + self.cells[1]
-            new_cells.extend(self.rule_184(first_cel))
+            first_cell = self.cells[0] + self.cells[0] + self.cells[1]
+            new_cells.extend(self.rule_184(first_cell))
             for i in range(1, self.cell_amount-1):
                 new_cell = self.cells[i-1] + self.cells[i] + self.cells[i+1]
                 new_cells.extend(self.rule_184(new_cell))
-            last_cel = self.cells[self.cell_amount-1] + self.cells[-1] + self.cells[-1]
-            new_cells.extend(self.rule_184(last_cel))
+            last_cell = self.cells[self.cell_amount-1] + self.cells[-1] + self.cells[-1]
+            new_cells.extend(self.rule_184(last_cell))
 
             self.cells = new_cells
             delimiter = ' '
