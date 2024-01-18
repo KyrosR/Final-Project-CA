@@ -14,18 +14,16 @@
 #9 Vraag over Dirichlet of beide zijden 1 of 0 zijn of dat het per zijde kan verschillen.
 #8 Als je online bent dan kan je appen als je iets niet snapt ofz of wat anders ofz idk. groeten Ruben.
 class TwodimCA:
-    def __init__(self, start_pattern, apply_rule, layers_amount, boundary_con):
+    def __init__(self, start_pattern, apply_rule, generations_amount, boundary_con):
         
         # The pattern of one's and zero's the 1 dimensional array
         self.start_patern = start_pattern
         # The rule that is applied to a given array
         self.apply_rule = apply_rule  
         # The amount of array's(layers) of nextgeneration cells.
-        self.layers_amount = layers_amount 
+        self.generations_amount = generations_amount
         # Putting the start_pattern in a list
         self.cells = list(self.start_patern)
-        # The amount of "cells" in the array, is useful for the for-loops
-        self.cell_amount = len(self.cells)
         # The boundary conditions for the firs/last cell of the array.
         self.boundary_con = boundary_con
 

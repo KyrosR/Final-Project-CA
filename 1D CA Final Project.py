@@ -13,9 +13,9 @@
 # nu met if elif.
 #9 Vraag over Dirichlet of beide zijden 1 of 0 zijn of dat het per zijde kan verschillen.
 #8 Als je online bent dan kan je appen als je iets niet snapt ofz of wat anders ofz idk. groeten Ruben.
-class OnedimCA:
+class CA:
+
     def __init__(self, start_pattern, apply_rule, layers_amount, boundary_con):
-        
         # The pattern of one's and zero's the 1 dimensional array
         self.start_patern = start_pattern
         # The rule that is applied to a given array
@@ -29,98 +29,52 @@ class OnedimCA:
         # The boundary conditions for the firs/last cell of the array.
         self.boundary_con = boundary_con
 
+class OnedimCA(CA):
+
+    def __init__(self, start_pattern, apply_rule, layers_amount, boundary_con):
+        super().__init__(start_pattern, apply_rule, layers_amount, boundary_con)
+
+
     # Willen we dit de cellprinter maken?
     # Heeft niet echt een doel nu, aangezien het al in layer() verwerkt zit.
-    def cells_print(self):
-        return self.cells
+    def rule_to_bin(self):
+        binary = bin(self.apply_rule)[2:].zfill(8)
+        binary_list = list(binary)
+        return binary_list
 
     # Determines the new cell based on rule 30
-    def rule_30(self, new_cell):
+    def rule(self, new_cell, binary_list):
         if new_cell == "111":
-            return "0"
+            return binary_list[0]
         elif new_cell == "110":
-            return "0"
+            return binary_list[1]
         elif new_cell == "101":
-            return "0"
+            return binary_list[2]
         elif new_cell == "100":
-            return "1"
+            return binary_list[3]
         elif new_cell == "011":
-            return "1"
+            return binary_list[4]
         elif new_cell == "010":
-            return "1"
+            return binary_list[5]
         elif new_cell == "001":
-            return "1"
+            return binary_list[6]
         else:
-            return "0"
+            return binary_list[7]
 
-
-    # Determines the new cell based on rule 110
-    def rule_110(self, new_cell):
-        if new_cell == "111":
-            return "0"
-        elif new_cell == "110":
-            return "1"
-        elif new_cell == "101":
-            return "1"
-        elif new_cell == "100":
-            return "0"
-        elif new_cell == "011":
-            return "1"
-        elif new_cell == "010":
-            return "1"
-        elif new_cell == "001":
-            return "1"
-        else:
-            return "0"
-
-    #Determines the new cell based on rule 184
-    def rule_184(self, new_cell):
-        if new_cell == "111":
-            return "1"
-        elif new_cell == "110":
-            return "0"
-        elif new_cell == "101":
-            return "1"
-        elif new_cell == "100":
-            return "1"
-        elif new_cell == "011":
-            return "1"
-        elif new_cell == "010":
-            return "0"
-        elif new_cell == "001":
-            return "0"
-        else:
-            return "0"
 
     #creërt nieuwe generatie cellen op basis periodieke boundaries
     def newgeneration_periodic(self):
         new_cells = []
         #voegt iedere nieuwe cell op basis van een rule toe aan de lijst van nieuwe cellen
         # Miss doen zoals bij Dirichlet want nu checkt die vgm wel heel vaak welke rule die moet toepassen
-        if self.apply_rule == 30:
-            for i in range(1, self.cell_amount+1):
-                new_cell = self.cells[i-2] + self.cells[i-1] + self.cells[i%self.cell_amount]
-                new_cells.extend(self.rule_30(new_cell))
-            self.cells = new_cells
-            delimiter = ' '
-            cells_configuration = delimiter.join(new_cells)
-            print(cells_configuration) #return
-        elif self.apply_rule == 110:
-            for i in range(1, self.cell_amount+1):
-                new_cell = self.cells[i-2] + self.cells[i-1] + self.cells[i%self.cell_amount]
-                new_cells.extend(self.rule_110(new_cell))
-            self.cells = new_cells
-            delimiter = ' '
-            cells_configuration = delimiter.join(new_cells)
-            print(cells_configuration) #return
-        elif self.apply_rule == 184:
-            for i in range(1, self.cell_amount+1):
-                new_cell = self.cells[i-2] + self.cells[i-1] + self.cells[i%self.cell_amount]
-                new_cells.extend(self.rule_184(new_cell))
-            self.cells = new_cells
-            delimiter = ' '
-            cells_configuration = delimiter.join(new_cells)
-            print(cells_configuration) #return
+        for i in range(1, self.cell_amount+1):
+            new_cell = self.cells[i-2] + self.cells[i-1] + self.cells[i%self.cell_amount]
+            new_cells.extend(self.rule(new_cell, self.rule_to_bin()))
+        self.cells = new_cells
+        delimiter = ' '
+        cells_configuration = delimiter.join(new_cells)
+        print(cells_configuration) #return
+        
         
 
     #creërt nieuwe generatie cellen met Dirichlet boundaries gekozen door user,(1 of 0)
@@ -129,94 +83,41 @@ class OnedimCA:
         # Zelfde idee als bij periodic, alleen eerst checken welke rule
         # Eerst de nieuwe eerste cel bepalen en dan als laatst de laatste cel, komt door boundary
         # de linker/rechter buurman van de eerste/laatse cel is of wel 1 of 0
-        if self.apply_rule == 30:
-            first_cell = str(condition) + self.cells[0] + self.cells[1]
-            new_cells.extend(self.rule_30(first_cell))
-            for i in range(1, self.cell_amount-1):
-                new_cell = self.cells[i-1] + self.cells[i] + self.cells[i+1]
-                new_cells.extend(self.rule_30(new_cell))
-            last_cell = self.cells[self.cell_amount-1] + self.cells[-1] + str(condition)
-            new_cells.extend(self.rule_30(last_cell))
+        
+        first_cell = str(condition) + self.cells[0] + self.cells[1]
+        new_cells.extend(self.rule(first_cell, self.rule_to_bin()))
+        for i in range(1, self.cell_amount-1):
+            new_cell = self.cells[i-1] + self.cells[i] + self.cells[i+1]
+            new_cells.extend(self.rule(new_cell, self.rule_to_bin()))
+        last_cell = self.cells[self.cell_amount-1] + self.cells[-1] + str(condition)
+        new_cells.extend(self.rule(last_cell, self.rule_to_bin()))
 
-            self.cells = new_cells
-            delimiter = ' '
-            cells_configuration = delimiter.join(new_cells)
-            print(cells_configuration) #return
+        self.cells = new_cells
+        delimiter = ' '
+        cells_configuration = delimiter.join(new_cells)
+        print(cells_configuration) #return
 
-        elif self.apply_rule == 110:
-            first_cell = str(condition) + self.cells[0] + self.cells[1]
-            new_cells.extend(self.rule_110(first_cell))
-            for i in range(1, self.cell_amount-1):
-                new_cell = self.cells[i-1] + self.cells[i] + self.cells[i+1]
-                new_cells.extend(self.rule_110(new_cell))
-            last_cell = self.cells[self.cell_amount-1] + self.cells[-1] + str(condition)
-            new_cells.extend(self.rule_110(last_cell))
-
-            self.cells = new_cells
-            delimiter = ' '
-            cells_configuration = delimiter.join(new_cells)
-            print(cells_configuration) #return
-
-        elif self.apply_rule == 184:
-            first_cell = str(condition) + self.cells[0] + self.cells[1]
-            new_cells.extend(self.rule_184(first_cell))
-            for i in range(1, self.cell_amount-1):
-                new_cell = self.cells[i-1] + self.cells[i] + self.cells[i+1]
-                new_cells.extend(self.rule_184(new_cell))
-            last_cell = self.cells[self.cell_amount-1] + self.cells[-1] + str(condition)
-            new_cells.extend(self.rule_184(last_cell))
-
-            self.cells = new_cells
-            delimiter = ' '
-            cells_configuration = delimiter.join(new_cells)
-            print(cells_configuration) #return
+        
 
     #creërt nieuwe generatie cellen met Neumann boundaries
     def newgeneration_Neumann(self):
         #Zelfde idee als bij Dirichletm maar nu heeft de linker/rechter buurman van de eerste/laatste cel
         # de zelfde staat als de eerste/laatse cel
         new_cells = []
-        if self.apply_rule == 30:
-            first_cell = self.cells[0] + self.cells[0] + self.cells[1]
-            new_cells.extend(self.rule_30(first_cell))
-            for i in range(1, self.cell_amount-1):
-                new_cell = self.cells[i-1] + self.cells[i] + self.cells[i+1]
-                new_cells.extend(self.rule_30(new_cell))
-            last_cell = self.cells[self.cell_amount-1] + self.cells[-1] + self.cells[-1]
-            new_cells.extend(self.rule_30(last_cell))
+        first_cell = self.cells[0] + self.cells[0] + self.cells[1]
+        new_cells.extend(self.rule(first_cell, self.rule_to_bin()))
+        for i in range(1, self.cell_amount-1):
+            new_cell = self.cells[i-1] + self.cells[i] + self.cells[i+1]
+            new_cells.extend(self.rule(new_cell, self.rule_to_bin))
+        last_cell = self.cells[self.cell_amount-1] + self.cells[-1] + self.cells[-1]
+        new_cells.extend(self.rule(last_cell, self.rule_to_bin))
 
-            self.cells = new_cells
-            delimiter = ' '
-            cells_configuration = delimiter.join(new_cells)
-            print(cells_configuration) #return
+        self.cells = new_cells
+        delimiter = ' '
+        cells_configuration = delimiter.join(new_cells)
+        print(cells_configuration) #return
 
-        elif self.apply_rule == 110:
-            first_cell = self.cel[0] + self.cells[0] + self.cells[1]
-            new_cells.extend(self.rule_110(first_cell))
-            for i in range(1, self.cell_amount-1):
-                new_cell = self.cells[i-1] + self.cells[i] + self.cells[i+1]
-                new_cells.extend(self.rule_110(new_cell))
-            last_cell = self.cells[self.cell_amount-1] + self.cells[-1] + self.cells[-1]
-            new_cells.extend(self.rule_110(last_cell))
-
-            self.cells = new_cells
-            delimiter = ' '
-            cells_configuration = delimiter.join(new_cells)
-            print(cells_configuration) #return
-
-        elif self.apply_rule == 184:
-            first_cell = self.cells[0] + self.cells[0] + self.cells[1]
-            new_cells.extend(self.rule_184(first_cell))
-            for i in range(1, self.cell_amount-1):
-                new_cell = self.cells[i-1] + self.cells[i] + self.cells[i+1]
-                new_cells.extend(self.rule_184(new_cell))
-            last_cell = self.cells[self.cell_amount-1] + self.cells[-1] + self.cells[-1]
-            new_cells.extend(self.rule_184(last_cell))
-
-            self.cells = new_cells
-            delimiter = ' '
-            cells_configuration = delimiter.join(new_cells)
-            print(cells_configuration) #return
+        
     
     #Zorgt ervoor dat de nieuwe generatie x aantal keer geprint wordt en bepaalt met welke boundaries.
     def layers(self):
@@ -236,7 +137,7 @@ class OnedimCA:
                 self.newgeneration_Neumann()
 
 
-p = OnedimCA("000010000", 30, 20, "Neumann")
+p = OnedimCA("000010000", 90, 20, "periodic")
 p.layers()
 
     
