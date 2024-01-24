@@ -21,6 +21,7 @@ class CA:
         # The boundary conditions for the firs/last cell of the array.
         self.boundary_con = boundary_con
 
+
 class OnedimCA(CA):
 
     def __init__(self, start_pattern, apply_rule, layers_amount, boundary_con):
@@ -132,9 +133,55 @@ class OnedimCA(CA):
 
 
 p = OnedimCA("000010000", 30, 20, "Neumann")
-p.layers()
+
+
+class TwodimCA(CA):
+    def __init__(self, start_pattern, apply_rule, layers_amount, boundary_con, row, colom):
+        super().__init__(start_pattern, apply_rule, layers_amount, boundary_con)
+        self.row = row
+        self.colom = colom
+
+
+
+    def new(self,bord):
+        lijst = []
+        for q in range(1, self.row+1):
+            lijst.append([])
+            for w in range(1, self.colom+1):
+                lijst[q-1].append(bord[q-1][w-1])
+        self.cells =  lijst
+        return lijst
+
+
+
+    def checker(self, nieuw_bord, bord):
+
+
+
+        for i in range(1,self.row+1):
+            for j in range(1, self.colom+1):
+                som = (bord[i-2][j-2] + bord[i-2][j-1] + bord[i-2][j%self.colom] +
+                    bord[i-1][j-2] + bord[i-1][j%self.colom] +
+                    bord[i%self.row][j-2] + bord[i%self.row][j-1] + bord[i%self.row][j%self.colom])
+            if bord[i-1][j-1] == 1:
+                
+                if som < 2 or som > 3:
+                    nieuw_bord[i-1][j-1] = 0
+            else:
+                if som == 3:
+                    nieuw_bord[i-1][j-1] = 1
+        self.start_patern = nieuw_bord
+        print("...",self.start_patern,"...")
+    
+
+
+    def evolution(self):
+        bord = self.start_patern
+        print(bord)
+        for s in range(5):
+            self.checker(self.new(bord), bord)
 
     
 
-        
-
+k = TwodimCA([[0,0,1,0,0,0],[1,0,1,0,0,0],[0,1,1,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]], "Game of life", 5, "periodic", 5, 6)
+k.evolution()
