@@ -153,8 +153,9 @@ class TwodimCA(CA):
 
 
 
-    def checker(self, bord):
-        self.new(bord)
+    def checker(self):
+        bord = self.start_patern
+        self.new(bord) 
         nieuw_bord = self.cells
         for i in range(1,self.row+1):
             for j in range(1, self.colom+1):
@@ -169,7 +170,7 @@ class TwodimCA(CA):
                 if som == 3:
                     nieuw_bord[i-1][j-1] = 1
         self.start_patern = nieuw_bord
-        print("...",self.start_patern,"...")
+        print("...",nieuw_bord,"...")
     
 
 
@@ -177,7 +178,7 @@ class TwodimCA(CA):
         bord = self.start_patern
         print(bord)
         for s in range(5):
-            self.checker(bord)
+            self.checker()
 
     
 
