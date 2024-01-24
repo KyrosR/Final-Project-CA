@@ -150,14 +150,12 @@ class TwodimCA(CA):
             for w in range(1, self.colom+1):
                 lijst[q-1].append(bord[q-1][w-1])
         self.cells =  lijst
-        return lijst
 
 
 
-    def checker(self, nieuw_bord, bord):
-
-
-
+    def checker(self, bord):
+        self.new(bord)
+        nieuw_bord = self.cells
         for i in range(1,self.row+1):
             for j in range(1, self.colom+1):
                 som = (bord[i-2][j-2] + bord[i-2][j-1] + bord[i-2][j%self.colom] +
@@ -179,7 +177,7 @@ class TwodimCA(CA):
         bord = self.start_patern
         print(bord)
         for s in range(5):
-            self.checker(self.new(bord), bord)
+            self.checker(bord)
 
     
 
