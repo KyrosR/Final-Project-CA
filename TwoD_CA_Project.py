@@ -56,10 +56,7 @@ class TwodimCA(CA):
        
    
 
-    def evolution(self):
-        print(self.start_patern)
-        for s in range(self.layers_amount):
-            self.update()
+    
 
     
 
