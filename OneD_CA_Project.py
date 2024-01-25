@@ -33,8 +33,8 @@ class OnedimCA(CA):
     def __init__(self, start_pattern, apply_rule, layers_amount, boundary_con):
         super().__init__(start_pattern, apply_rule, layers_amount, boundary_con)
         self.configuration = []
-    
 
+        
     # Van rule naar bin nummer
     def rule_to_bin(self):
         binary = bin(self.apply_rule)[2:].zfill(8)
@@ -148,7 +148,8 @@ class OnedimCA(CA):
    
 
 
-p = OnedimCA("000010000", 30, 10, "Neumann")
+p = OnedimCA("000000010000000", 30, 10, "Neumann")
 p.update()
 p.plot()
+
 
