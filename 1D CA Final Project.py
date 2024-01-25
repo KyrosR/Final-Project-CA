@@ -146,13 +146,11 @@ class TwodimCA(CA):
         super().__init__(start_pattern, apply_rule, layers_amount, boundary_con)
         self.row = row
         self.colom = colom
-        self.grid = np.array(self.start_patern)
-
-        self.size = self.grid.shape[0]
+        
 
         self.fig, self.ax = plt.subplots()
 
-        self.im = self.ax.imshow(self.grid, cmap='Greys', interpolation='nearest')
+        self.im = self.ax.imshow(self.start_patern, cmap='Greys', interpolation='nearest')
 
         self.ani = animation.FuncAnimation(self.fig, self.update, frames=100, interval=50, save_count=50, blit=True)
 
@@ -168,12 +166,13 @@ class TwodimCA(CA):
 
 
 
-    def update(self,frame): 
-        nieuw_bord = np.zeros((self.size, self.size), dtype=int)
-        for i in range(self.size):
-            for j in range(self.size):
+    def update(self,frame):
+        self.new(self.start_patern) 
+        nieuw_bord = self.cells
+        for i in range(1,self.row+1):
+            for j in range(1, self.colom+1):
                 if self.start_patern[i-1][j-1] == 1:
-                    som = (self.grid[i-2][j-2] + self.grid[i-2][j-1] + self.start_patern[i-2][j%self.colom] +
+                    som = (self.start_patern[i-2][j-2] + self.start_patern[i-2][j-1] + self.start_patern[i-2][j%self.colom] +
                     self.start_patern[i-1][j-2] + self.start_patern[i-1][j%self.colom] +
                     self.start_patern[i%self.row][j-2] + self.start_patern[i%self.row][j-1] + self.start_patern[i%self.row][j%self.colom])
                     if som < 2 or som > 3:
