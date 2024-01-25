@@ -150,7 +150,7 @@ class TwodimCA(CA):
 
         self.fig, self.ax = plt.subplots()
 
-        self.im = self.ax.imshow(self.start_patern, cmap='Greys', interpolation='nearest')
+        self.im = self.ax.imshow(self.start_patern, cmap='magma', interpolation='nearest')
 
         self.ani = animation.FuncAnimation(self.fig, self.update, frames=100, interval=50, save_count=50, blit=True)
 
