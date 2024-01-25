@@ -32,7 +32,7 @@ class OnedimCA(CA):
 
     def __init__(self, start_pattern, apply_rule, layers_amount, boundary_con):
         super().__init__(start_pattern, apply_rule, layers_amount, boundary_con)
-        
+        self.configuration = []
     
 
     # Van rule naar bin nummer
@@ -110,17 +110,20 @@ class OnedimCA(CA):
             new_cells.extend(self.rule(new_cell, self.rule_to_bin()))
         last_cell = self.cells[self.cell_amount-1] + self.cells[-1] + self.cells[-1]
         new_cells.extend(self.rule(last_cell, self.rule_to_bin()))
-
+        
         self.cells = new_cells
-        delimiter = ' '
-        cells_configuration = delimiter.join(new_cells)
-        print(cells_configuration) #return
+        self.configuration.append(np.array([int(x) for x in new_cells], dtype= int))
+        
+        #delimiter = ' '
+        #cells_configuration = delimiter.join(new_cells)
+        #print(cells_configuration) #return
 
         
     
     #Zorgt ervoor dat de nieuwe generatie x aantal keer geprint wordt en bepaalt met welke boundaries.
     def update(self):
         # Start patroon in juiste print wijze zetten
+        self.configuration.append(np.array([int(x) for x in self.cells], dtype= int))
         delimiter = ' '
         first_layer = delimiter.join(self.cells)
         if self.boundary_con == "periodic":
@@ -136,12 +139,16 @@ class OnedimCA(CA):
             print(first_layer)
             for i in range(1, self.layers_amount+1):
                 self.newgeneration_Neumann()
-
+                
+    def plot(self):
+        plt.imshow(self.configuration, cmap='Greys', interpolation='nearest')
+        plt.axis('off')
+        plt.show()
 
    
 
 
-p = OnedimCA("000010000", 30, 3, "Neumann")
+p = OnedimCA("000010000", 30, 10, "Neumann")
 p.update()
-
+p.plot()
 
