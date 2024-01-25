@@ -6,9 +6,6 @@
 #7 Nu print het programma de nextgenerations cells, miss later veranderen in return voor het visuele aspect.
 #8 Als je online bent dan kan je appen als je iets niet snapt ofz of wat anders ofz idk. groeten Ruben.
 import numpy as np
-
-
-
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 class CA:
@@ -70,9 +67,7 @@ class OnedimCA(CA):
             new_cell = self.cells[i-2] + self.cells[i-1] + self.cells[i%self.cell_amount]
             new_cells.extend(self.rule(new_cell, self.rule_to_bin()))
         self.cells = new_cells
-        delimiter = ' '
-        cells_configuration = delimiter.join(new_cells)
-        print(cells_configuration) #return
+        self.configuration.append(np.array([int(x) for x in new_cells], dtype= int))
         
         
 
@@ -92,9 +87,7 @@ class OnedimCA(CA):
         new_cells.extend(self.rule(last_cell, self.rule_to_bin()))
 
         self.cells = new_cells
-        delimiter = ' '
-        cells_configuration = delimiter.join(new_cells)
-        print(cells_configuration) #return
+        self.configuration.append(np.array([int(x) for x in new_cells], dtype= int))
 
         
 
@@ -124,19 +117,14 @@ class OnedimCA(CA):
     def update(self):
         # Start patroon in juiste print wijze zetten
         self.configuration.append(np.array([int(x) for x in self.cells], dtype= int))
-        delimiter = ' '
-        first_layer = delimiter.join(self.cells)
         if self.boundary_con == "periodic":
-            print(first_layer)
             for i in range(1, self.layers_amount+1):
                 self.newgeneration_periodic()
         elif self.boundary_con == "Dirichlet":
             condition = int(input("Kies tussen 0 of 1. ")) #1 or 0
-            print(first_layer)
             for i in range(1, self.layers_amount+1):
                 self.newgeneration_Dirichlet(condition)
         elif self.boundary_con == "Neumann":
-            print(first_layer)
             for i in range(1, self.layers_amount+1):
                 self.newgeneration_Neumann()
                 
@@ -148,7 +136,7 @@ class OnedimCA(CA):
    
 
 
-p = OnedimCA("000000010000000", 30, 10, "Neumann")
+p = OnedimCA("000000110000000", 30, 10, "Dirichlet")
 p.update()
 p.plot()
 
