@@ -7,10 +7,10 @@
 #8 Als je online bent dan kan je appen als je iets niet snapt ofz of wat anders ofz idk. groeten Ruben.
 import numpy as np
 
-import numpy as np
+
 
 import matplotlib.pyplot as plt
-
+import matplotlib.animation as animation
 class CA:
 
     def __init__(self, start_pattern, apply_rule, layers_amount, boundary_con):
@@ -32,7 +32,6 @@ class OnedimCA(CA):
 
     def __init__(self, start_pattern, apply_rule, layers_amount, boundary_con):
         super().__init__(start_pattern, apply_rule, layers_amount, boundary_con)
-        self.configuration =  []
         
     
 
@@ -113,7 +112,6 @@ class OnedimCA(CA):
         new_cells.extend(self.rule(last_cell, self.rule_to_bin()))
 
         self.cells = new_cells
-        self.configuration.append(self.cells)
         delimiter = ' '
         cells_configuration = delimiter.join(new_cells)
         print(cells_configuration) #return
@@ -125,7 +123,6 @@ class OnedimCA(CA):
         # Start patroon in juiste print wijze zetten
         delimiter = ' '
         first_layer = delimiter.join(self.cells)
-        self.configuration.append(self.cells)
         if self.boundary_con == "periodic":
             print(first_layer)
             for i in range(1, self.layers_amount+1):
@@ -141,15 +138,10 @@ class OnedimCA(CA):
                 self.newgeneration_Neumann()
 
 
-    def plot(self):
-        fig, ax = plt.subplots()
-        ax.imshow(self.configuration, cmap='Greys', interpolation='nearest')
-        ax.set_xticks([])
-        ax.set_yticks([])
-        plt.show()
+   
 
 
 p = OnedimCA("000010000", 30, 3, "Neumann")
-
+p.update()
 
 
