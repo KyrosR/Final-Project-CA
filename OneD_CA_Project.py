@@ -150,7 +150,6 @@ class OnedimCA(CA):
 
 
 p = OnedimCA("000010000", 30, 3, "Neumann")
-p.update()
-p.plot()
+
 
 
