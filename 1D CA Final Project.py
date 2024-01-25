@@ -5,6 +5,12 @@
 #boundaries in een andere file.
 #7 Nu print het programma de nextgenerations cells, miss later veranderen in return voor het visuele aspect.
 #8 Als je online bent dan kan je appen als je iets niet snapt ofz of wat anders ofz idk. groeten Ruben.
+import numpy as np
+
+import matplotlib.pyplot as plt
+
+import matplotlib.animation as animation
+
 class CA:
 
     def __init__(self, start_pattern, apply_rule, layers_amount, boundary_con):
@@ -140,8 +146,17 @@ class TwodimCA(CA):
         super().__init__(start_pattern, apply_rule, layers_amount, boundary_con)
         self.row = row
         self.colom = colom
+        self.grid = np.array(self.start_patern)
 
+        self.size = self.grid.shape[0]
 
+        self.fig, self.ax = plt.subplots()
+
+        self.im = self.ax.imshow(self.grid, cmap='Greys', interpolation='nearest')
+
+        self.ani = animation.FuncAnimation(self.fig, self.update, frames=100, interval=50, save_count=50, blit=True)
+
+        
 
     def new(self,bord):
         lijst = []
@@ -153,34 +168,38 @@ class TwodimCA(CA):
 
 
 
-    def checker(self):
-        bord = self.start_patern
-        self.new(bord) 
-        nieuw_bord = self.cells
-        for i in range(1,self.row+1):
-            for j in range(1, self.colom+1):
-                som = (bord[i-2][j-2] + bord[i-2][j-1] + bord[i-2][j%self.colom] +
-                    bord[i-1][j-2] + bord[i-1][j%self.colom] +
-                    bord[i%self.row][j-2] + bord[i%self.row][j-1] + bord[i%self.row][j%self.colom])
-            if bord[i-1][j-1] == 1:
-                
-                if som < 2 or som > 3:
-                    nieuw_bord[i-1][j-1] = 0
-            else:
-                if som == 3:
-                    nieuw_bord[i-1][j-1] = 1
+    def update(self,frame): 
+        nieuw_bord = np.zeros((self.size, self.size), dtype=int)
+        for i in range(self.size):
+            for j in range(self.size):
+                if self.start_patern[i-1][j-1] == 1:
+                    som = (self.grid[i-2][j-2] + self.grid[i-2][j-1] + self.start_patern[i-2][j%self.colom] +
+                    self.start_patern[i-1][j-2] + self.start_patern[i-1][j%self.colom] +
+                    self.start_patern[i%self.row][j-2] + self.start_patern[i%self.row][j-1] + self.start_patern[i%self.row][j%self.colom])
+                    if som < 2 or som > 3:
+                        nieuw_bord[i-1][j-1] = 0
+                else:
+                    som = (self.start_patern[i-2][j-2] + self.start_patern[i-2][j-1] + self.start_patern[i-2][j%self.colom] +
+                    self.start_patern[i-1][j-2] + self.start_patern[i-1][j%self.colom] +
+                    self.start_patern[i%self.row][j-2] + self.start_patern[i%self.row][j-1] + self.start_patern[i%self.row][j%self.colom])
+                    if som == 3:
+                        nieuw_bord[i-1][j-1] = 1
         self.start_patern = nieuw_bord
-        print("...",nieuw_bord,"...")
-    
+        self.im.set_data(self.start_patern)
 
+        return self.im,
+        #print("...",nieuw_bord,"...")
+
+
+       
+   
 
     def evolution(self):
-        bord = self.start_patern
-        print(bord)
-        for s in range(5):
-            self.checker()
+        print(self.start_patern)
+        for s in range(self.layers_amount):
+            self.update()
 
     
 
-k = TwodimCA([[0,0,1,0,0,0],[1,0,1,0,0,0],[0,1,1,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]], "Game of life", 5, "periodic", 5, 6)
-k.evolution()
+k = TwodimCA([[0,0,1,0,0,0],[1,0,1,0,0,0],[0,1,1,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]], "Game of life", 25, "periodic", 5, 6) 
+plt.show()
