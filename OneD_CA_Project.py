@@ -136,7 +136,7 @@ class OnedimCA(CA):
    
 
 
-p = OnedimCA("00000000000010000000000000", 54, 10, "periodic")
+p = OnedimCA("00000000000010000000000000", 60, 20, "periodic")
 p.update()
 p.plot()
 
