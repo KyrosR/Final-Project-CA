@@ -1,4 +1,4 @@
-from OneD_CA_Project import CA
+from SuperClass_CA_Project import CA
 import numpy as np
 
 import matplotlib.pyplot as plt
