@@ -40,7 +40,8 @@ class OnedimCA(CA):
 
 
     """""""""    
-    This function derives an eight-digit binary number from the given rule number and puts those eight digits in a list. Then it returns that list.
+    This function derives an eight-digit binary number from the given rule number and puts those eight digits in a list. 
+    Then it returns that list.
     """""""""
 
     def rule_to_bin(self):
