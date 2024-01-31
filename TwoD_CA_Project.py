@@ -1,5 +1,5 @@
 #Cellular Automata
-#Class for 1 dim CA
+#Class for 2 dim CA
 
 
 """""""""
