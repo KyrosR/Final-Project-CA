@@ -2,7 +2,7 @@
 #Class for 1 dim CA
 
 """""""""
-Importing numpy for usefull functions such as the np.array, which we used to create the input list for the plot.
+Importing numpy for useful functions such as the np.array, which we used to create the input list for the plot.
 Importing matplotlib.pylot for the plot functions.
 Importing SuperClass_CA_Project for nessecary variables.
 """"""'"""
@@ -206,7 +206,7 @@ class OnedimCA(CA):
 
 # Makes p an instance of the class with the values of the variables that are necessary for the program to run.
 # Could be changed to accept inputs for a more interactive style.
-p = OnedimCA("00000000000010000000000000", 60, 20, "periodic")
+p = OnedimCA("00000000000010000000000000", 30, 20, "periodic")
 
 # Calls the functions update() and plot() with the values of the variables from above.
 # This makes sure that the program runs and that the result is plotted.
