@@ -20,7 +20,7 @@ The class for the two-dimensional CA.
 
 class TwodimCA(CA):
     """""""""
-    The __init__ function contains all variabeles for the TwoD CA.
+    The __init__ function contains all variables for the TwoD CA.
     These variables are in a specific order, which is also the order in which the user types 
     in the values they want for those variables.
     """""""""
