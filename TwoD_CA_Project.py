@@ -108,6 +108,7 @@ class TwodimCA(CA):
 # Makes k an instance of the class with the values of the variables that are necessary for the program to run.
 # Could be changed to accept inputs for a more interactive style.
 k = TwodimCA([[0,0,1,0,0,0],[1,0,1,0,0,0],[0,1,1,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]], "Game of life", 25, "periodic", 5, 6)
+
 # Shows all the new_boards in the animation. 
 plt.show()
 
