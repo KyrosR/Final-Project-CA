@@ -3,7 +3,7 @@
 
 
 """""""""
-Importing SuperClass_CA_Project for nessecary variables.
+Importing SuperClass_CA_Project for necessary variables.
 Importing matplotlib.pylot for the plot functions.
 Importing matplotlib.animation for the animation functions.
 """"""'"""
@@ -20,8 +20,8 @@ The class for the two-dimensional CA.
 
 class TwodimCA(CA):
     """""""""
-    The __init__ function contains all variabels for the TwoD CA.
-    These variables are in a speciffic order, which is also the order in which the user types 
+    The __init__ function contains all variabeles for the TwoD CA.
+    These variables are in a specific order, which is also the order in which the user types 
     in the values they want for those variables.
     """""""""
 
@@ -32,7 +32,7 @@ class TwodimCA(CA):
         self.row = row
         self.colom = colom
         
-        # Necessary functions and variables for the plot of the the animantion.
+        # Necessary functions and variables for the plot of the the animation.
         self.fig, self.ax = plt.subplots()
         plt.axis("off")
         self.im = self.ax.imshow(self.start_patern, cmap='magma', interpolation='nearest')
@@ -56,15 +56,15 @@ class TwodimCA(CA):
 
     """""""""
     This function updates the new_bord and then assigns the new_bord to the original bord (self.startpatern).
-    This funtion is with periodic boundaries.
+    This function uses periodic boundaries.
     """""""""
 
     def update(self,frame):
-        # Makes copy of the old bord.
+        # Makes a copy of the old bord.
         self.new(self.start_patern) 
         nieuw_bord = self.cells
 
-        # Determens the new state of each cell from the old bord by checking all its neighbours.
+        # Determines the new state of each cell from the old bord by checking all its neighbors.
         # Then it updates each cell in the new_bord.
         for i in range(1,self.row+1):
             for j in range(1, self.colom+1):
@@ -72,7 +72,7 @@ class TwodimCA(CA):
                 # Checks if the cell is alive, else the cell is dead.
                 if self.start_patern[i-1][j-1] == 1:
 
-                    # The sum of all neighbours equals the amount of alive cells.
+                    # The sum of all neighbors equals the amount of alive cells.
                     sum = (self.start_patern[i-2][j-2] + self.start_patern[i-2][j-1] + self.start_patern[i-2][j%self.colom] +
                     self.start_patern[i-1][j-2] + self.start_patern[i-1][j%self.colom] +
                     self.start_patern[i%self.row][j-2] + self.start_patern[i%self.row][j-1] + self.start_patern[i%self.row][j%self.colom])
@@ -82,7 +82,7 @@ class TwodimCA(CA):
                         nieuw_bord[i-1][j-1] = 0
 
                 else:
-                    # The sum of all neighbours equals the amount of alive cells.
+                    # The sum of all neighbors equals the amount of alive cells.
                     sum = (self.start_patern[i-2][j-2] + self.start_patern[i-2][j-1] + self.start_patern[i-2][j%self.colom] +
                     self.start_patern[i-1][j-2] + self.start_patern[i-1][j%self.colom] +
                     self.start_patern[i%self.row][j-2] + self.start_patern[i%self.row][j-1] + self.start_patern[i%self.row][j%self.colom])

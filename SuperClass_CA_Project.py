@@ -2,7 +2,7 @@
 
 """"""""" 
 This is the superclass of the CA's.
-It contains variables that both CA's need, although the use of them could be a little diffrent.
+It contains variables that both CA's need, although the use of them could be a little different.
 Access to this super class is granted by importing it.
 """""""""
 
